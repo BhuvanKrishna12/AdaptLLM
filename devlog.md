@@ -42,3 +42,34 @@ Build dataset validation and formatting pipeline
 - Alpaca format is the standard for instruction fine-tuning: instruction, input, output fields
 - CSVs with commas inside text fields need proper quoting or the parser breaks
 - Separating validation from formatting keeps the pipeline clean and modular
+
+## Day 2 — May 18
+
+### Goal
+
+Write QLoRA config, run first fine-tuning, verify adapter saves correctly
+
+### What I did
+
+- Built qlora_config.py with LoRA config (r=16, alpha=32) and SFTConfig
+- Switched from TrainingArguments to SFTConfig for trl 1.4.0 compatibility
+- Downloaded ChatDoctor-HealthCareMagic-100k dataset (500 rows) from HF
+- Debugged multiple issues: fp16 vs bf16, max_seq_length naming, OOM errors
+- Fixed OOM by reducing batch size to 1, gradient accumulation to 8, max_length=512
+- Full 3 epoch training run completed in ~21 minutes on RTX 4060
+- Built test_inference.py for side-by-side base vs fine-tuned comparison
+- Verified fine-tuned model responds in clinical doctor style vs base model's generic style
+
+### What I learned
+
+- Gemma uses BFloat16 not Float16 — mixing them causes a CUDA error
+- SFTConfig in trl 1.4.0 uses max_length not max_seq_length
+- Long medical text inputs cause OOM — capping sequence length is essential
+- Fine-tuning changes response style and tone more than factual content
+- LoRA only trains 0.27% of parameters (11.8M out of 4.3B) — everything else is frozen
+
+### Results
+
+- Train loss: 3.592 → 2.261 over 3 epochs
+- Token accuracy: 0.38 → 0.52
+- Adapter saved to outputs/adapter (~50MB vs 4.3GB full model)
