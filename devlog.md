@@ -73,3 +73,32 @@ Write QLoRA config, run first fine-tuning, verify adapter saves correctly
 - Train loss: 3.592 → 2.261 over 3 epochs
 - Token accuracy: 0.38 → 0.52
 - Adapter saved to outputs/adapter (~50MB vs 4.3GB full model)
+
+## Day 3 May 18
+
+### Goal
+
+Build Gradio chat interface, push adapter to HF Hub, write project README
+
+### What I did
+
+- Built serve/app.py: Gradio interface with side by side base vs fine-tuned comparison
+- Tested with multiple medical questions including a niche drug interaction question
+- Pushed LoRA adapter to HuggingFace Hub at BhuvanKrishna12/adaptllm-medical
+- Wrote model card with YAML metadata, training results and usage instructions
+- Wrote full project README with architecture diagram, results, quickstart guide
+- Built push_to_hub.py for automated adapter uploads
+
+### What I learned
+
+- Fine-tuning 500 rows shifts response style more than factual content
+- Base model already knows medical content from pretraining, fine-tuning changes tone and specificity
+- The drug interaction question showed clearest improvement, fine-tuned model gave more specific mechanism and actionable advice
+- HuggingFace is used for three separate things: base model hosting, adapter hosting, and datasets
+- Windows line endings (\r) in .env files can break HTTP headers, always strip tokens
+
+### Results
+
+- Live Gradio demo running locally with public gradio.live link
+- Adapter published at huggingface.co/BhuvanKrishna12/adaptllm-medical
+- Full project README live on GitHub
