@@ -126,9 +126,9 @@ Fine-tuned adapter available at:
 
 ## Limitations
 
-- Fine-tuning currently runs locally — requires a CUDA GPU with 8GB+ VRAM
+- Fine-tuning currently runs locally but requires a CUDA GPU with 8GB+ VRAM
 - 500 row dataset produces style adaptation more than factual improvement
-- Medical demo is for research purposes only — not for clinical use
+- Medical demo is for research purposes only, not for clinical use
 
 ## Future Work
 
@@ -140,7 +140,3 @@ Fine-tuned adapter available at:
 ## Devlog
 
 See [devlog.md](devlog.md) for a day by day account of how this was built.
-Commit it:
-cmdgit add README.md
-git commit -m "docs: add full project README with architecture, results and quickstart"
-git push
