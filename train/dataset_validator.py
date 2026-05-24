@@ -38,6 +38,8 @@ def validate_dataset(file_path: str) -> tuple[bool, str]:
     for col in REQUIRED_COLUMNS:
         empty = df[col].isnull().sum() + (df[col] == "").sum()
         if empty > 0:
+            if col == "input":
+                continue # input is optional in alpaca format
             return False, f"Column '{col}' has {empty} empty values"
     
     return True, f"Dataset valid. {len(df)} rows ready for training."
