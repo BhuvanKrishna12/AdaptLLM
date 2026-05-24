@@ -4,10 +4,6 @@
 
 A local LLM fine-tuning pipeline that trains LoRA adapters on user-provided datasets and deploys them for public inference. Built in one week as a solo project.
 
-## Demo
-
-[Add demo video/gif here]
-
 ## Architecture
 
 ```
@@ -52,11 +48,11 @@ cd train
 python3 ui.py
 ```
 
-That's it. Upload your dataset, click Train, and get a deployed model.
+Upload your dataset, click Train, and get a deployed model.
 
 ## How it works
 
-### Step 1 — Prepare your dataset
+### Step 1: Prepare your dataset
 
 CSV with three columns:
 
@@ -67,7 +63,7 @@ instruction, input, output
 
 Minimum 50 rows. `input` column can be empty. See `docs/example_datasets/` for reference.
 
-### Step 2 — Train
+### Step 2: Train
 
 Upload your CSV in the UI, give your model a name, click "Validate & Train". The app will:
 
@@ -77,7 +73,7 @@ Upload your CSV in the UI, give your model a name, click "Validate & Train". The
 - Save the LoRA adapter
 - Push it to HuggingFace Hub
 
-### Step 3 — Use your model
+### Step 3: Use your model
 
 After training the app shows your model link and a ready-to-use code snippet:
 
@@ -92,7 +88,7 @@ tokenizer = AutoTokenizer.from_pretrained("google/gemma-3-4b-it")
 
 ## Results
 
-### Medical Q&A — ChatDoctor dataset
+### Medical Q&A: ChatDoctor dataset
 
 | Epoch | Loss  | Token Accuracy |
 | ----- | ----- | -------------- |
@@ -108,7 +104,7 @@ Training time: ~21 minutes on RTX 4060 8GB
 
 **Fine-tuned on ChatDoctor:** Ciprofloxacin is a fluoroquinolone antibiotic which can affect glucose synthesis enzymes. When combined with metformin, this can lead to severe hypoglycemia. You need to stop the ciprofloxacin and switch to an antibiotic which does not affect glucose metabolism.
 
-### Finance Q&A — Finance Alpaca dataset
+### Finance Q&A: Finance Alpaca dataset
 
 | Epoch | Loss | Token Accuracy |
 | ----- | ---- | -------------- |
@@ -171,14 +167,14 @@ AdaptLLM/
 
 ## Limitations
 
-- Fine-tuning runs locally — requires a CUDA GPU
+- Fine-tuning runs locally hence, a GPU is required
 - 500 row dataset produces style adaptation more than deep factual improvement
 - Inference also requires a GPU for reasonable speed
 - Medical and finance demos are for research purposes only
 
 ## Future Work
 
-- Cloud training backend — trigger training without local GPU
+- Cloud training backend: trigger training without local GPU
 - Automatic evaluation metrics beyond loss
 - Support for multiple base models
 - Web-based dataset builder
