@@ -1,8 +1,8 @@
 # AdaptLLM Dev Log
 
-## Day 1 May 16
+## Day 1
 
-### Goal 1:
+### Goal:
 
 Set up environment, load Gemma 3 4B, verify inference on RTX 4060
 
@@ -26,7 +26,9 @@ Set up environment, load Gemma 3 4B, verify inference on RTX 4060
 - Full project folder structure
 - Verified Gemma 3 4B generates coherent responses on RTX 4060
 
-### Goal 2
+### Day 2:
+
+### Goal:
 
 Build dataset validation and formatting pipeline
 
@@ -43,7 +45,7 @@ Build dataset validation and formatting pipeline
 - CSVs with commas inside text fields need proper quoting or the parser breaks
 - Separating validation from formatting keeps the pipeline clean and modular
 
-## Day 2 — May 18
+## Day 3
 
 ### Goal
 
@@ -74,7 +76,7 @@ Write QLoRA config, run first fine-tuning, verify adapter saves correctly
 - Token accuracy: 0.38 → 0.52
 - Adapter saved to outputs/adapter (~50MB vs 4.3GB full model)
 
-## Day 3 May 18
+## Day 4
 
 ### Goal
 
@@ -102,3 +104,38 @@ Build Gradio chat interface, push adapter to HF Hub, write project README
 - Live Gradio demo running locally with public gradio.live link
 - Adapter published at huggingface.co/BhuvanKrishna12/adaptllm-medical
 - Full project README live on GitHub
+
+## Day 5
+
+### Goal
+
+Build unified end-to-end UI that ties the full pipeline together
+
+### What I did
+
+- Built train/ui.py: single Gradio app with Train and Chat tabs
+- Train tab: upload CSV → validate → format → train → push to HF Hub → show code snippet
+- Chat tab: side by side base vs fine-tuned comparison
+- Fixed dataset validator to allow empty 'input' column (valid in Alpaca format)
+- Debugged HF token issues: old read token was cached in shell session overriding .env
+- Fixed DNS resolution dropping in WSL: set Google nameservers permanently
+- Tested full pipeline on finance dataset (gbharti/finance-alpaca, 500 rows)
+- adapter pushed to huggingface.co/Bhu1Krishna/adaptllm-finance
+- Added load_models_if_available(): chat tab loads existing adapter on restart without retraining
+- Fixed result box not showing after training and corrected generator loop condition
+- Fixed "Open Chat Interface" button using gr.Tabs selected state
+
+### What I learned
+
+- Gradio generators need to yield final result after thread completes, not inside the loop
+- Shell session environment variables override .env files, always unset before testing
+- WSL DNS resets on restart so need to set generateResolvConf = false in wsl.conf
+- Empty 'input' field is valid Alpaca format, only instruction and output are required
+- PeftModel loads in seconds from local adapter, no retraining needed on restart
+
+### Results
+
+- Full pipeline working end to end through UI
+- Tested on two domains: medical and finance
+- Both adapters live on HuggingFace Hub
+- Chat tab works immediately on restart
